@@ -1,0 +1,65 @@
+{
+  "_doc": "max_tool_calls 1 = the API gets exactly one shot per question; follow-up searches would mostly measure the model. eval-run --max-tool-calls N runs a separately reported multi-call variant. Engines are the thing under test. Every engine runs on the primary model; secondary models only re-run the same engines to check that the ranking doesn't depend on the model. Bundled setups are search APIs that can't be separated from their model (opt-in, reported separately).",
+
+  "defaults": {
+    "search": {"max_results": 5},
+    "fetch": {"max_content_tokens": 30000},
+    "max_tool_calls": 1,
+    "client": {"search_chars_per_result": 6000}
+  },
+
+  "models": {
+    "primary": {"alias": "haiku", "model": "anthropic/claude-haiku-5.5",
+                "provider": {"only": ["anthropic"], "allow_fallbacks": false},
+                "note": "has native search+fetch on the Anthropic endpoint, so native competes on the same model as every third-party engine"},
+    "secondary": [
+      {"alias": "ds41flash", "model": "deepseek/deepseek-v4.1-flash",
+       "note": "cheap open-weights model, no native tools"},
+      {"alias": "gpt6luna", "model": "openai/gpt-6-luna",
+       "provider": {"only": ["openai"], "allow_fallbacks": false},
+       "note": "second native search implementation (OpenAI)"}
+    ]
+  },
+
+  "search_engines": [
+    {"id": "exa",          "params": {"engine": "exa"}},
+    {"id": "exa-deep",     "params": {"engine": "exa", "mode": "deep"}},
+    {"id": "parallel",     "params": {"engine": "parallel"}},
+    {"id": "parallel-adv", "params": {"engine": "parallel", "mode": "advanced"}},
+    {"id": "perplexity",   "params": {"engine": "perplexity"}},
+    {"id": "firecrawl",    "params": {"engine": "firecrawl"}},
+    {"id": "native",       "params": {"engine": "native"},
+     "note": "the model provider's own search; skipped on models without it (never silently replaced by Exa)"},
+
+    {"id": "brave",        "via": "client", "params": {"engine": "brave", "maximum_number_of_tokens": 8192, "price_per_1k": 5.0},
+     "note": "Brave LLM Context endpoint (pre-extracted snippets); not on OpenRouter"},
+    {"id": "cf-ceramic",   "via": "client", "params": {"engine": "cloudflare", "provider": "ceramic", "price_per_1k": 0.25},
+     "note": "Cloudflare Web Search (beta, 2026-10). Returns url/title/description only"},
+    {"id": "cf-linkup",    "via": "client", "params": {"engine": "cloudflare", "provider": "linkup", "price_per_1k": 5.0}},
+    {"id": "cf-exa",       "via": "client", "params": {"engine": "cloudflare", "provider": "exa", "price_per_1k": 7.0},
+     "note": "same backend as `exa`, via Cloudflare: isolates the gateway's effect"},
+    {"id": "deepseek",     "via": "client", "params": {"engine": "deepseek", "price_per_1k": 0.75},
+     "note": "DeepSeek Search (2026-10-17), model-oriented `summary` per result"},
+    {"id": "deepseek-content", "via": "client", "params": {"engine": "deepseek", "need_content": true, "price_per_1k": 0.75},
+     "note": "same, with full page `content`"}
+  ],
+
+  "fetch_engines": [
+    {"id": "openrouter", "params": {"engine": "openrouter"}},
+    {"id": "exa",        "params": {"engine": "exa"}},
+    {"id": "parallel",   "params": {"engine": "parallel"}},
+    {"id": "firecrawl",  "params": {"engine": "firecrawl"}},
+    {"id": "native",     "params": {"engine": "native"}, "note": "Anthropic-only"},
+
+    {"id": "cloudflare", "via": "client", "params": {"engine": "cloudflare-fetch"},
+     "note": "Browser Run /markdown (headless Chrome); cost from X-Browser-Ms-Used at $0.09/browser-hour"},
+    {"id": "deepseek",   "via": "client", "params": {"engine": "deepseek-fetch", "price_per_1k": 0.75}}
+  ],
+
+  "bundled": [
+    {"id": "gemini-native", "alias": "gemini35lite", "model": "google/gemini-3.5-flash-lite", "search": {"engine": "native"}},
+    {"id": "grok-native",   "alias": "grok43",       "model": "x-ai/grok-4.3",                "search": {"engine": "native"}},
+    {"id": "sonar",         "alias": "sonar",        "model": "perplexity/sonar", "via": "builtin",
+     "note": "no tool calling; search always on, engine not selectable"}
+  ]
+}

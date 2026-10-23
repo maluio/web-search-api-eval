@@ -1,0 +1,278 @@
+[
+  {"id": "httpx-timeout", "kind": "search", "tags": ["docs"], "origin": "claude-authored",
+   "prompt": "In the Python httpx library, what is the default request timeout and how do I set separate connect and read timeouts?",
+   "sources": ["python-httpx.org", "github.com/encode/httpx"],
+   "facts": [
+     {"fact": "Default timeout is 5 seconds", "match": ["5 seconds", "timeout\\s*=\\s*5(\\.0)?\\b", "five seconds"]},
+     {"fact": "httpx.Timeout(...) with connect=/read=", "match": ["Timeout\\([^)]*connect\\s*=", "Timeout\\([^)]*read\\s*="]}
+   ]},
+
+  {"id": "git-blame-ws", "kind": "search", "tags": ["docs"], "origin": "claude-authored",
+   "prompt": "Which git command shows the commit that last modified each line of a file while ignoring whitespace-only changes, and how do I also detect lines moved from other files?",
+   "sources": ["git-scm.com"],
+   "facts": [
+     {"fact": "git blame -w ignores whitespace", "match": ["blame\\b.*\\s-w\\b", "-w\\b.*whitespace"]},
+     {"fact": "-C detects lines moved/copied from other files", "match": ["\\s-C\\b"]}
+   ]},
+
+  {"id": "sqlite-wal", "kind": "search", "tags": ["docs"], "origin": "claude-authored",
+   "prompt": "According to the SQLite documentation, what are the concurrency trade-offs of WAL mode versus the rollback journal, and when should WAL not be used?",
+   "sources": ["sqlite.org/wal.html"],
+   "facts": [
+     {"fact": "Readers do not block writers and vice versa", "match": ["readers do not block writers", "do not block (each other|readers)"]},
+     {"fact": "Only one writer at a time", "match": ["(only )?one writer", "single writer"]},
+     {"fact": "WAL does not work over a network filesystem", "match": ["network file ?system"]},
+     {"fact": "Checkpointing moves WAL content back into the database", "match": ["checkpoint"]}
+   ]},
+
+  {"id": "caddy-admin-port", "kind": "search", "tags": ["long-tail", "selfhost"], "origin": "claude-authored",
+   "prompt": "On which address and port does the Caddy web server's admin API listen by default, and how do I disable it?",
+   "sources": ["caddyserver.com"],
+   "facts": [
+     {"fact": "localhost:2019", "match": ["2019"]},
+     {"fact": "Disable with admin off in the global options", "match": ["admin\\s+off", "\"disabled\"\\s*:\\s*true"]}
+   ]},
+
+  {"id": "syncthing-ports", "kind": "search", "tags": ["long-tail", "selfhost"], "origin": "claude-authored",
+   "prompt": "Which ports does Syncthing use by default for its web GUI, the sync protocol, and local discovery?",
+   "sources": ["docs.syncthing.net"],
+   "facts": [
+     {"fact": "GUI 8384/TCP", "match": ["8384"]},
+     {"fact": "Sync protocol 22000 TCP+QUIC", "match": ["22000"]},
+     {"fact": "Local discovery 21027/UDP", "match": ["21027"]}
+   ]},
+
+  {"id": "transformer-paper", "kind": "search", "tags": ["research", "baseline"], "origin": "claude-authored",
+   "prompt": "Which paper introduced the Transformer architecture? Give the title, first author, venue and year, and link to the paper.",
+   "sources": ["arxiv.org/abs/1706.03762", "arxiv.org/pdf/1706.03762", "papers.nips.cc", "proceedings.neurips.cc"],
+   "facts": [
+     {"fact": "Attention Is All You Need", "match": ["attention is all you need"]},
+     {"fact": "Vaswani et al.", "match": ["vaswani"]},
+     {"fact": "NeurIPS/NIPS 2017", "match": ["(neurips|nips)[^\\n]{0,40}2017", "2017[^\\n]{0,40}(neurips|nips)"]}
+   ]},
+
+  {"id": "lost-in-the-middle", "kind": "search", "tags": ["research", "long-tail"], "origin": "claude-authored",
+   "prompt": "Find the paper 'Lost in the Middle: How Language Models Use Long Contexts'. Give its arXiv ID, first author and the venue it was eventually published in.",
+   "sources": ["arxiv.org/abs/2307.03172", "arxiv.org/pdf/2307.03172", "aclanthology.org", "direct.mit.edu"],
+   "facts": [
+     {"fact": "arXiv 2307.03172", "match": ["2307\\.03172"]},
+     {"fact": "Nelson F. Liu", "match": ["nelson( f\\.?)? liu"]},
+     {"fact": "TACL: accepted 2023, published in vol. 12 (2024), pp. 157-173; either year is correct", "match": ["TACL", "transactions of the association for computational linguistics"]}
+   ]},
+
+  {"id": "bm25-survey", "kind": "search", "tags": ["research", "long-tail"], "origin": "claude-authored",
+   "prompt": "Find the canonical survey/monograph on the probabilistic relevance framework behind BM25. Who wrote it, when, and where was it published?",
+   "sources": ["nowpublishers.com", "doi.org/10.1561/1500000019"],
+   "facts": [
+     {"fact": "'The Probabilistic Relevance Framework: BM25 and Beyond'", "match": ["probabilistic relevance framework:? bm25 and beyond"]},
+     {"fact": "Robertson and Zaragoza", "match": ["zaragoza"]},
+     {"fact": "2009, Foundations and Trends in IR", "match": ["foundations and trends"]}
+   ]},
+
+  {"id": "openrouter-websearch-defaults", "kind": "search", "tags": ["docs", "recent"], "origin": "claude-authored",
+   "prompt": "In OpenRouter's openrouter:web_search server tool, what is the default max_results, and which engine values can be set?",
+   "sources": ["openrouter.ai/docs"],
+   "facts": [
+     {"fact": "Default max_results is 5", "match": ["max_results[^\\n]{0,60}\\b5\\b", "default[^\\n]{0,30}\\b5\\b"]},
+     {"fact": "Engines include exa", "match": ["\\bexa\\b"]},
+     {"fact": "Engines include parallel", "match": ["\\bparallel\\b"]},
+     {"fact": "Engines include firecrawl", "match": ["firecrawl"]},
+     {"fact": "Engines include perplexity", "match": ["perplexity"]},
+     {"fact": "Engines include native", "match": ["\\bnative\\b"]}
+   ]},
+
+  {"id": "python-latest", "kind": "search", "tags": ["recent", "time-sensitive"], "origin": "claude-authored",
+   "prompt": "What is the latest stable Python 3 release right now, when was it released, and what are its headline features?",
+   "sources": ["python.org"],
+   "facts": null,
+   "check": "Time-sensitive. Judge on whether the answer gives a specific version + date with a python.org citation; verify manually against python.org/downloads."},
+
+  {"id": "brave-api-pricing", "kind": "search", "tags": ["pricing", "time-sensitive"], "origin": "claude-authored",
+   "prompt": "What does the Brave Search API currently cost per 1,000 web search queries, and is there a free tier? Cite the official pricing page.",
+   "sources": ["brave.com/search/api", "api-dashboard.search.brave.com"],
+   "facts": null,
+   "check": "Time-sensitive. Should cite brave.com/search/api or api-dashboard.search.brave.com; verify manually."},
+
+  {"id": "hn-search-api-sentiment", "kind": "search", "tags": ["forum", "time-sensitive"], "origin": "claude-authored",
+   "prompt": "What have Hacker News commenters said in 2026 about using web search APIs (Exa, Brave, Parallel, Perplexity, etc.) for LLM agents? Summarise the main praise and complaints with links to the threads.",
+   "sources": ["news.ycombinator.com"],
+   "facts": null,
+   "check": "Tests forum coverage. Good answers link news.ycombinator.com threads from 2026 and quote/paraphrase concrete opinions."},
+
+  {"id": "rundfunkbeitrag", "kind": "search", "tags": ["non-english", "time-sensitive"], "origin": "claude-authored",
+   "prompt": "Wie hoch ist der Rundfunkbeitrag in Deutschland aktuell pro Monat und seit wann gilt dieser Betrag? Bitte mit Quelle.",
+   "sources": ["rundfunkbeitrag.de"],
+   "facts": null,
+   "check": "German-language query; answer should be in German and cite rundfunkbeitrag.de or another official source. Verify amount manually."},
+
+  {"id": "fetch-rfc9110", "kind": "fetch", "tags": ["static", "large-page"], "origin": "claude-authored",
+   "prompt": "Fetch https://www.rfc-editor.org/rfc/rfc9110 and tell me the section number and title that defines the Retry-After header field, plus the two value formats it allows.",
+   "facts": [
+     {"fact": "Section 10.2.3 Retry-After", "match": ["10\\.2\\.3"]},
+     {"fact": "HTTP-date", "match": ["HTTP-date"]},
+     {"fact": "delay-seconds", "match": ["delay-seconds"]}
+   ]},
+
+  {"id": "fetch-sqlite-limits", "kind": "fetch", "tags": ["static", "table"], "origin": "claude-authored",
+   "prompt": "Fetch https://www.sqlite.org/limits.html and tell me the default values of SQLITE_MAX_LENGTH and SQLITE_MAX_COLUMN.",
+   "facts": [
+     {"fact": "SQLITE_MAX_LENGTH = 1,000,000,000", "match": ["1,?000,?000,?000", "one billion", "10\\^9"]},
+     {"fact": "SQLITE_MAX_COLUMN = 2000", "match": ["\\b2,?000\\b"]}
+   ]},
+
+  {"id": "fetch-arxiv-pdf", "kind": "fetch", "tags": ["pdf"], "origin": "claude-authored",
+   "prompt": "Fetch the PDF at https://arxiv.org/pdf/1706.03762 and tell me how many layers the encoder stack of the base model has and the model dimension d_model.",
+   "facts": [
+     {"fact": "N = 6 encoder layers", "match": ["N\\s*=\\s*6", "\\b6 (identical )?layers", "\\bsix (identical )?layers"]},
+     {"fact": "d_model = 512", "match": ["\\b512\\b"]}
+   ]},
+
+  {"id": "fetch-hn-thread", "kind": "fetch", "tags": ["forum"], "origin": "claude-authored",
+   "prompt": "Fetch https://news.ycombinator.com/item?id=49963171 and summarise the submission title and the three most substantive points made in the comments.",
+   "facts": null,
+   "check": "Success = real thread content (title + actual comments), not a generic or hallucinated summary."},
+
+  {"id": "fetch-reddit", "kind": "fetch", "tags": ["anti-bot"], "origin": "claude-authored",
+   "prompt": "Fetch https://www.reddit.com/r/LocalLLaMA/top/?t=week and list the titles of the top three posts.",
+   "facts": null,
+   "check": "Reddit blocks many fetchers. Success = real post titles. A correct, honest 'blocked/could not fetch' is better than invented titles (score hallucination harshly)."},
+
+  {"id": "fetch-js-docs", "kind": "fetch", "tags": ["js-rendered"], "origin": "claude-authored",
+   "prompt": "Fetch https://openrouter.ai/docs/guides/features/server-tools/web-fetch and list every value the `engine` parameter accepts.",
+   "facts": [
+     {"fact": "openrouter", "match": ["\\bopenrouter\\b(?![:./])"]},
+     {"fact": "exa", "match": ["\\bexa\\b"]},
+     {"fact": "firecrawl", "match": ["firecrawl"]},
+     {"fact": "parallel", "match": ["\\bparallel\\b"]},
+     {"fact": "native", "match": ["\\bnative\\b"]}
+   ]},
+
+  {"id": "ds-search-limits", "kind": "search", "tags": ["post-cutoff", "docs"], "origin": "claude-websearch",
+   "prompt": "For DeepSeek's web Search API (POST /v1/tools/search), what is the maximum query length, and what are the default and maximum number of results per request?",
+   "sources": ["api-docs.deepseek.com"],
+   "facts": [
+     {"fact": "Query max 128 characters", "match": ["\\b128\\b"]},
+     {"fact": "Default count 10", "match": ["default[^\\n]{0,40}\\b10\\b", "\\b10\\b[^\\n]{0,20}default"]},
+     {"fact": "Max count 50", "match": ["\\b50\\b"]}
+   ],
+   "verified_from": "https://api-docs.deepseek.com/zh-cn/guides/search/",
+   "why": "API launched 2026-10-17, after the model's training data; tests index freshness"},
+
+  {"id": "cf-websearch-defaults", "kind": "search", "tags": ["post-cutoff", "docs"], "origin": "claude-websearch",
+   "prompt": "In Cloudflare's Web Search API (AI Gateway), which search provider is used when none is specified, which other providers can be chosen, and what is the maximum value of the `limit` parameter?",
+   "sources": ["developers.cloudflare.com/web-search", "blog.cloudflare.com/introducing-web-search-api"],
+   "facts": [
+     {"fact": "Default provider Ceramic", "match": ["ceramic"]},
+     {"fact": "Exa and Linkup selectable", "match": ["linkup"]},
+     {"fact": "limit max 10", "match": ["(max(imum)?|up to|1\\s*[-–]\\s*)[^\\n]{0,20}\\b10\\b"]}
+   ],
+   "verified_from": "https://developers.cloudflare.com/web-search/how-to-use/",
+   "why": "beta since 2026-10-02"},
+
+  {"id": "brave-llm-context-budget", "kind": "search", "tags": ["docs", "recent"], "origin": "claude-websearch",
+   "prompt": "For the Brave Search API LLM Context endpoint, what are the default and the allowed range of maximum_number_of_tokens, and the default maximum_number_of_urls?",
+   "sources": ["api-dashboard.search.brave.com", "brave.com/search/api"],
+   "facts": [
+     {"fact": "Default 8192 tokens", "match": ["8,?192"]},
+     {"fact": "Range 1024–32768", "match": ["32,?768"]},
+     {"fact": "Default 20 URLs", "match": ["\\b20\\b"]}
+   ],
+   "verified_from": "https://api-dashboard.search.brave.com/documentation/services/llm-context"},
+
+  {"id": "anthropic-webfetch-limits", "kind": "search", "tags": ["docs", "recent"], "origin": "claude-websearch",
+   "prompt": "For Anthropic's web fetch tool in the Claude API: what is the maximum URL length, which error code is returned when a URL is blocked (e.g. by robots.txt), and which tool version first added cache bypass?",
+   "sources": ["platform.claude.com/docs", "docs.anthropic.com"],
+   "facts": [
+     {"fact": "Max URL length 250 characters", "match": ["\\b250\\b"]},
+     {"fact": "url_not_allowed", "match": ["url_not_allowed"]},
+     {"fact": "web_fetch_20260309 adds use_cache", "match": ["20260309"]}
+   ],
+   "verified_from": "https://platform.claude.com/docs/en/agents-and-tools/tool-use/web-fetch-tool"},
+
+  {"id": "openrouter-max-uses", "kind": "search", "tags": ["docs", "recent"], "origin": "claude-websearch",
+   "prompt": "In OpenRouter's openrouter:web_search server tool, which parameter limits the number of searches per request, and what is the default (and maximum) of the top-level max_tool_calls budget?",
+   "sources": ["openrouter.ai/docs"],
+   "facts": [
+     {"fact": "max_uses tool parameter", "match": ["max_uses"]},
+     {"fact": "max_tool_calls defaults to 30 steps", "match": ["\\b30\\b"]}
+   ],
+   "verified_from": "https://openrouter.ai/docs/guides/features/server-tools/web-search",
+   "why": "the exact detail the pilot run got wrong"},
+
+  {"id": "exauser-agent", "kind": "search", "tags": ["long-tail"], "origin": "claude-websearch",
+   "prompt": "What User-Agent string does Exa use for user-initiated (live) page fetches, and at which URL are the public keys for its Web Bot Auth request signatures published?",
+   "sources": ["crawler.exa.ai"],
+   "facts": [
+     {"fact": "ExaUser/1.0", "match": ["ExaUser/1\\.0"]},
+     {"fact": "Key directory at crawler.exa.ai/.well-known/http-message-signatures-directory", "match": ["http-message-signatures-directory"]}
+   ],
+   "verified_from": "https://crawler.exa.ai/exauser"},
+
+  {"id": "sqlite-attached-limit", "kind": "search", "tags": ["long-tail", "docs"], "origin": "claude-websearch",
+   "prompt": "How many databases can be attached to one SQLite connection by default, what is the hard upper limit, and what is the default SQLITE_MAX_VARIABLE_NUMBER in current SQLite versions?",
+   "sources": ["sqlite.org/limits.html"],
+   "facts": [
+     {"fact": "Default 10 attached", "match": ["\\b10\\b"]},
+     {"fact": "Hard limit 125", "match": ["\\b125\\b"]},
+     {"fact": "SQLITE_MAX_VARIABLE_NUMBER 32766 since 3.32.0", "match": ["32,?766"]}
+   ],
+   "verified_from": "https://www.sqlite.org/limits.html",
+   "why": "old default 999 is the well-known answer; tests whether the API surfaces the current value"},
+
+  {"id": "rfc9309-limits", "kind": "search", "tags": ["long-tail", "standards"], "origin": "claude-websearch",
+   "prompt": "Under RFC 9309 (Robots Exclusion Protocol), what minimum robots.txt size must crawlers be able to parse, how many consecutive redirects should they follow, and how long may a cached robots.txt be used?",
+   "sources": ["rfc-editor.org/rfc/rfc9309", "datatracker.ietf.org/doc/html/rfc9309"],
+   "facts": [
+     {"fact": "At least 500 KiB", "match": ["500\\s*(kib|kibibytes|kb)"]},
+     {"fact": "At least five redirects", "match": ["\\b(five|5)\\b[^\\n]{0,30}redirect", "redirect[^\\n]{0,40}\\b(five|5)\\b"]},
+     {"fact": "Cache at most 24 hours", "match": ["24\\s*hours"]}
+   ],
+   "verified_from": "https://www.rfc-editor.org/rfc/rfc9309"},
+
+  {"id": "fetch-cf-bot-ids", "kind": "fetch", "tags": ["exact-values", "docs"], "origin": "claude-websearch",
+   "prompt": "Fetch https://developers.cloudflare.com/browser-run/reference/automatic-request-headers/ and give the bot detection IDs for Browser Run quick actions and for the crawl endpoint, plus the default User-Agent of the crawl endpoint.",
+   "facts": [
+     {"fact": "Quick actions 119853733", "match": ["119853733"]},
+     {"fact": "Crawl endpoint 128292352", "match": ["128292352"]},
+     {"fact": "CloudflareBrowserRenderingCrawler/1.0", "match": ["CloudflareBrowserRenderingCrawler/1\\.0"]}
+   ],
+   "verified_from": "https://developers.cloudflare.com/browser-run/reference/automatic-request-headers/",
+   "why": "9-digit IDs can't come from model memory: retrieval-or-nothing"},
+
+  {"id": "fetch-deepseek-zh", "kind": "fetch", "tags": ["non-english", "post-cutoff"], "origin": "claude-websearch",
+   "prompt": "Fetch https://api-docs.deepseek.com/zh-cn/guides/search/ and answer in English: what is the allowed range of `count` for the Search endpoint, the maximum query length, and after which HTTP status codes do the docs say to wait and retry?",
+   "facts": [
+     {"fact": "count 1–50", "match": ["\\b50\\b"]},
+     {"fact": "query max 128 chars", "match": ["\\b128\\b"]},
+     {"fact": "retry on 408, 429, 5xx", "match": ["408"]}
+   ],
+   "verified_from": "https://api-docs.deepseek.com/zh-cn/guides/search/",
+   "why": "Chinese page, published days ago"},
+
+  {"id": "fetch-parallel-bots", "kind": "fetch", "tags": ["long-tail"], "origin": "claude-websearch",
+   "prompt": "Fetch https://parallel.ai/parallel-web-systems-bots and give the version numbers in the User-Agent strings of ShapBot and Shap-User, and the URL of ShapBot's published IP list.",
+   "facts": [
+     {"fact": "ShapBot/0.1.0", "match": ["ShapBot/0\\.1\\.0"]},
+     {"fact": "Shap-User/0.1.0", "match": ["Shap-User/0\\.1\\.0"]},
+     {"fact": "IP list docs.parallel.ai/resources/shapbot.json", "match": ["shapbot\\.json"]}
+   ],
+   "verified_from": "https://parallel.ai/parallel-web-systems-bots.md"},
+
+  {"id": "fetch-arxiv-lim-versions", "kind": "fetch", "tags": ["research", "exact-values"], "origin": "claude-websearch",
+   "prompt": "Fetch https://arxiv.org/abs/2307.03172 and list all authors in order, and give the date of the latest version.",
+   "facts": [
+     {"fact": "Liu, Lin, Hewitt, Paranjape, Bevilacqua, Petroni, Liang", "match": ["Bevilacqua"]},
+     {"fact": "Fabio Petroni", "match": ["Petroni"]},
+     {"fact": "v3, 20 Nov 2023", "match": ["20 Nov(ember)? 2023", "2023-11-20", "November 20,? 2023"]}
+   ],
+   "verified_from": "https://arxiv.org/abs/2307.03172"},
+
+  {"id": "fetch-rfc9309-unreachable", "kind": "fetch", "tags": ["standards", "large-page"], "origin": "claude-websearch",
+   "prompt": "Fetch https://www.rfc-editor.org/rfc/rfc9309 and give the section number that defines crawler behaviour when robots.txt is unreachable (server errors), what the crawler must assume, and after how long it may stop assuming that.",
+   "facts": [
+     {"fact": "Section 2.3.1.4", "match": ["2\\.3\\.1\\.4"]},
+     {"fact": "Complete disallow", "match": ["complete(ly)? disallow"]},
+     {"fact": "After e.g. 30 days", "match": ["30\\s*days"]}
+   ],
+   "verified_from": "https://www.rfc-editor.org/rfc/rfc9309"}
+]

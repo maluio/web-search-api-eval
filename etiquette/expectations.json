@@ -1,0 +1,164 @@
+{
+  "_doc": "Pre-registered 2026-10-22, before any observation. See expectations.md. Prediction values: pass | fail | documented-exception | partial | unknown. robots values: obeys | may_ignore | googlebot_rules | unknown.",
+  "criteria": ["E1_identity", "E2_verifiable", "E3_robots", "E4_rate", "E5_no_circumvention", "E6_honest_failure", "E7_scope", "E8_noindex"],
+
+  "providers": {
+    "anthropic": {
+      "engines": ["search:native@haiku", "fetch:native@haiku"],
+      "confidence": "official",
+      "agents": [
+        {"token": "Claude-User", "purpose": "user_fetch", "ua_contains": "Claude-User", "robots": "obeys", "crawl_delay": true},
+        {"token": "Claude-SearchBot", "purpose": "index", "ua_contains": "Claude-SearchBot", "robots": "obeys", "crawl_delay": true},
+        {"token": "ClaudeBot", "purpose": "training", "ua_contains": "ClaudeBot", "robots": "obeys", "crawl_delay": true}
+      ],
+      "ip_lists": ["https://claude.com/crawling/bots.json"],
+      "web_bot_auth": null,
+      "captcha_bypass": false,
+      "notes": "fetch results cached; robots block -> url_not_allowed; no JS rendering",
+      "predicted": {"E1_identity": "pass", "E2_verifiable": "pass", "E3_robots": "pass", "E4_rate": "unknown",
+                    "E5_no_circumvention": "pass", "E6_honest_failure": "pass", "E7_scope": "pass", "E8_noindex": "unknown"}
+    },
+    "openrouter": {
+      "engines": ["fetch:openrouter@*"],
+      "confidence": "none",
+      "agents": [],
+      "ip_lists": [], "web_bot_auth": null, "captcha_bypass": null,
+      "predicted": {"E1_identity": "unknown", "E2_verifiable": "unknown", "E3_robots": "unknown", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "unknown", "E7_scope": "unknown", "E8_noindex": "unknown"}
+    },
+    "exa": {
+      "engines": ["search:exa@*", "search:exa-deep@*", "fetch:exa@*", "search:cf-exa@*"],
+      "confidence": "official",
+      "agents": [
+        {"token": "ExaSearchBot", "purpose": "index", "ua": "Mozilla/5.0 (compatible; ExaSearchBot/1.0; +https://crawler.exa.ai/)",
+         "robots": "obeys", "robots_fallback": ["major search engine groups", "*"]},
+        {"token": "ExaUser", "purpose": "user_fetch", "ua": "Mozilla/5.0 (compatible; ExaUser/1.0; +https://crawler.exa.ai/exauser)",
+         "robots": "may_ignore"}
+      ],
+      "ip_lists": [],
+      "web_bot_auth": "https://crawler.exa.ai/.well-known/http-message-signatures-directory",
+      "captcha_bypass": false,
+      "predicted": {"E1_identity": "pass", "E2_verifiable": "pass", "E3_robots": "documented-exception", "E4_rate": "pass",
+                    "E5_no_circumvention": "pass", "E6_honest_failure": "unknown", "E7_scope": "pass", "E8_noindex": "pass"}
+    },
+    "parallel": {
+      "engines": ["search:parallel@*", "search:parallel-adv@*", "fetch:parallel@*"],
+      "confidence": "official",
+      "agents": [
+        {"token": "ShapBot", "purpose": "index", "ua": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; ShapBot/0.1.0", "robots": "obeys"},
+        {"token": "Shap-User", "purpose": "user_fetch", "ua": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko); compatible; Shap-User/0.1.0", "robots": "unknown"}
+      ],
+      "ip_lists": ["https://docs.parallel.ai/resources/shapbot.json"],
+      "web_bot_auth": null, "captcha_bypass": null,
+      "predicted": {"E1_identity": "pass", "E2_verifiable": "fail", "E3_robots": "unknown", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "unknown", "E7_scope": "unknown", "E8_noindex": "unknown"}
+    },
+    "perplexity": {
+      "engines": ["search:perplexity@*", "search:sonar@sonar"],
+      "confidence": "official",
+      "agents": [
+        {"token": "PerplexityBot", "purpose": "index", "ua": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; PerplexityBot/1.0; +https://perplexity.ai/perplexitybot)", "robots": "obeys"},
+        {"token": "Perplexity-User", "purpose": "user_fetch", "ua": "Mozilla/5.0 AppleWebKit/537.36 (KHTML, like Gecko; compatible; Perplexity-User/1.0; +https://perplexity.ai/perplexity-user)", "robots": "may_ignore"}
+      ],
+      "ip_lists": ["https://www.perplexity.com/perplexitybot.json", "https://www.perplexity.com/perplexity-user.json"],
+      "web_bot_auth": null, "captcha_bypass": null,
+      "red_flag": "after both tokens are blocked, requests for the run's unique URL arrive with a browser UA from unlisted IPs (Cloudflare 2025 report, disputed)",
+      "predicted": {"E1_identity": "pass", "E2_verifiable": "pass", "E3_robots": "documented-exception", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "unknown", "E7_scope": "unknown", "E8_noindex": "unknown"}
+    },
+    "firecrawl": {
+      "engines": ["search:firecrawl@*", "fetch:firecrawl@*"],
+      "confidence": "official",
+      "agents": [
+        {"token": "FirecrawlAgent", "purpose": "robots_token_only", "ua_contains": null, "robots": "obeys",
+         "note": "token used for robots.txt matching, 'not necessarily the User-Agent header'"}
+      ],
+      "ip_lists": [], "web_bot_auth": null, "captcha_bypass": null,
+      "escalates_on_block": {"default_mode": "auto", "on_status": [401, 403, 429], "to": "enhanced proxies", "max_retries": 1},
+      "predicted": {"E1_identity": "fail", "E2_verifiable": "fail", "E3_robots": "unknown", "E4_rate": "fail",
+                    "E5_no_circumvention": "fail", "E6_honest_failure": "unknown", "E7_scope": "unknown", "E8_noindex": "unknown"}
+    },
+    "brave": {
+      "engines": ["search:brave@*"],
+      "confidence": "official",
+      "agents": [{"token": null, "purpose": "index", "ua_contains": null, "robots": "googlebot_rules",
+                  "note": "deliberately no differentiated UA"}],
+      "ip_lists": [], "web_bot_auth": null, "captcha_bypass": null, "live_fetch_expected": false,
+      "predicted": {"E1_identity": "documented-exception", "E2_verifiable": "fail", "E3_robots": "pass", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "not_applicable", "E7_scope": "not_applicable", "E8_noindex": "pass"}
+    },
+    "ceramic": {
+      "engines": ["search:cf-ceramic@*"],
+      "confidence": "official-thin",
+      "agents": [{"token": "TerraCotta", "purpose": "index", "ua_contains": "TerraCotta", "robots": "unknown"}],
+      "ip_lists": [], "web_bot_auth": null, "captcha_bypass": null, "live_fetch_expected": false,
+      "predicted": {"E1_identity": "partial", "E2_verifiable": "fail", "E3_robots": "unknown", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "not_applicable", "E7_scope": "not_applicable", "E8_noindex": "unknown"}
+    },
+    "linkup": {
+      "engines": ["search:cf-linkup@*"],
+      "confidence": "official",
+      "agents": [{"token": "LinkupBot", "purpose": "index",
+                  "ua": "LinkupBot/1.0 (LinkupBot for web indexing; https://www.linkup.so/bot; bot@linkup.so)", "robots": "obeys"}],
+      "ip_lists": ["https://linkup.so/linkupbot-ips.txt"], "web_bot_auth": null, "captcha_bypass": null, "live_fetch_expected": false,
+      "predicted": {"E1_identity": "pass", "E2_verifiable": "pass", "E3_robots": "pass", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "not_applicable", "E7_scope": "not_applicable", "E8_noindex": "unknown"}
+    },
+    "cloudflare-browser-run": {
+      "engines": ["fetch:cloudflare@*"],
+      "confidence": "official",
+      "agents": [{"token": null, "purpose": "user_fetch",
+                  "ua": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36",
+                  "identifying_headers": ["cf-brapi-request-id", "cf-biso-devtools", "Signature", "Signature-Input", "Signature-agent"],
+                  "bot_detection_id": 119853733, "robots": "unknown"}],
+      "ip_lists": [],
+      "web_bot_auth": "https://web-bot-auth.cloudflare-browser-rendering-085.workers.dev/.well-known/http-message-signatures-directory",
+      "captcha_bypass": null, "renders_js": true,
+      "predicted": {"E1_identity": "partial", "E2_verifiable": "pass", "E3_robots": "unknown", "E4_rate": "unknown",
+                    "E5_no_circumvention": "pass", "E6_honest_failure": "unknown", "E7_scope": "pass", "E8_noindex": "not_applicable"}
+    },
+    "deepseek": {
+      "engines": ["search:deepseek@*", "search:deepseek-content@*", "fetch:deepseek@*"],
+      "confidence": "official-api-only; crawler identity 3rd-party/conflicting",
+      "agents": [{"token": "DeepSeek-User?", "purpose": "user_fetch", "ua_contains": null, "robots": "unknown"}],
+      "ip_lists": [], "web_bot_auth": null, "captcha_bypass": null,
+      "notes": "per-target-domain QPS limit; 403 'rejected by security policy', 404 'blocked by site policy'; empty/failed not billed",
+      "predicted": {"E1_identity": "unknown", "E2_verifiable": "fail", "E3_robots": "unknown", "E4_rate": "pass",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "pass", "E7_scope": "unknown", "E8_noindex": "unknown"}
+    },
+    "openai": {
+      "engines": ["search:native@gpt6luna"],
+      "confidence": "official",
+      "agents": [
+        {"token": "OAI-SearchBot", "purpose": "index", "ua_contains": "OAI-SearchBot", "robots": "obeys"},
+        {"token": "ChatGPT-User", "purpose": "user_fetch", "ua_contains": "ChatGPT-User", "robots": "may_ignore"},
+        {"token": "GPTBot", "purpose": "training", "ua_contains": "GPTBot", "robots": "obeys"}
+      ],
+      "ip_lists": ["https://openai.com/searchbot.json", "https://openai.com/chatgpt-user.json", "https://openai.com/gptbot.json"],
+      "web_bot_auth": null, "captcha_bypass": null,
+      "predicted": {"E1_identity": "pass", "E2_verifiable": "pass", "E3_robots": "documented-exception", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "unknown", "E7_scope": "unknown", "E8_noindex": "unknown"}
+    },
+    "google": {
+      "engines": ["search:gemini-native@gemini35lite"],
+      "confidence": "official-snippets + 3rd-party",
+      "agents": [
+        {"token": "Googlebot", "purpose": "index", "ua_contains": "Googlebot", "robots": "obeys"},
+        {"token": "Google-Extended", "purpose": "grounding_opt_out_token", "ua_contains": null, "robots": "obeys"}
+      ],
+      "ip_lists": ["published per crawler/fetcher class (developers.google.com/crawling)"],
+      "web_bot_auth": null, "captcha_bypass": null,
+      "predicted": {"E1_identity": "pass", "E2_verifiable": "pass", "E3_robots": "pass", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "unknown", "E7_scope": "not_applicable", "E8_noindex": "pass"}
+    },
+    "xai": {
+      "engines": ["search:grok-native@grok43"],
+      "confidence": "3rd-party",
+      "agents": [{"token": "xAI-SearchBot? GrokBot? Grok-DeepSearch?", "purpose": "unknown", "ua_contains": null, "robots": "unknown"}],
+      "ip_lists": [], "web_bot_auth": null, "captcha_bypass": null,
+      "notes": "one Feb 2026 report: spoofed Chrome/Safari/Go-http-client UAs",
+      "predicted": {"E1_identity": "fail", "E2_verifiable": "fail", "E3_robots": "unknown", "E4_rate": "unknown",
+                    "E5_no_circumvention": "unknown", "E6_honest_failure": "unknown", "E7_scope": "unknown", "E8_noindex": "unknown"}
+    }
+  }
+}
